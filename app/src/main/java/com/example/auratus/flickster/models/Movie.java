@@ -12,8 +12,8 @@ public class Movie implements Serializable {
     private static final String POSTER_PATH = "poster_path";
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String OVERVIEW = "overview";
-    private static final String BACKDROP_PATH = "backdropPath";
-    private static final String VOTE_AVERAGE = "voteAverage";
+    private static final String BACKDROP_PATH = "backdrop_path";
+    private static final String VOTE_AVERAGE = "vote_average";
     private static final String POPULARITY = "popularity";
     private static final String ID = "id";
     private String posterPath;
