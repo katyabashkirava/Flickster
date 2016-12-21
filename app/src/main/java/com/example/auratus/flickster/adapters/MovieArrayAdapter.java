@@ -21,6 +21,13 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     public static final int REGULAR_TYPE = 1;
     private LayoutInflater layoutInflater;
 
+    public static class ViewHolder {
+        TextView tvTitle;
+        TextView tvOverview;
+        ImageView ivImage;
+        ImageView ivImageFull;
+    }
+
     public MovieArrayAdapter(Context context, List<Movie> movies) {
         super(context, 0, movies);
         layoutInflater = LayoutInflater.from(context);
@@ -50,28 +57,32 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         Movie movie = getItem(position);
         int type = getItemViewType(position);
 
+        ViewHolder viewHolder;
         if (convertView == null) {
+            viewHolder = new ViewHolder();
             convertView = getInflatedLayoutForType(type);
+            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+            viewHolder.tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
+            viewHolder.ivImage = (ImageView) convertView.findViewById(R.id.ivMovieImage);
+            viewHolder.ivImageFull = (ImageView) convertView.findViewById(R.id.ivMovieImageFull);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-        TextView tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
 
         if (type == REGULAR_TYPE) {
-            tvTitle.setText(movie.getOriginalTitle());
-            if (tvOverview != null) {
-                tvOverview.setText(movie.getOverview());
+            viewHolder.tvTitle.setText(movie.getOriginalTitle());
+            if (viewHolder.tvOverview != null) {
+                viewHolder.tvOverview.setText(movie.getOverview());
             }
-            ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivMovieImage);
-            ivImage.setImageResource(0);
-            Picasso.with(getContext()).load(movie.getPosterUrl()).transform(new RoundedCornersTransformation(10, 10)).into(ivImage);
+            viewHolder.ivImage.setImageResource(0);
+            Picasso.with(getContext()).load(movie.getPosterUrl())
+                    .transform(new RoundedCornersTransformation(10, 10)).into(viewHolder.ivImage);
         } else {
-            ImageView ivImageFull = (ImageView) convertView.findViewById(R.id.ivMovieImageFull);
-            ivImageFull.setImageResource(0);
-            Picasso.with(getContext()).load(movie.getBackdropUrl()).transform(new RoundedCornersTransformation(10, 10)).into(ivImageFull);
-
+            viewHolder.ivImageFull.setImageResource(0);
+            Picasso.with(getContext()).load(movie.getBackdropUrl())
+                    .transform(new RoundedCornersTransformation(10, 10)).into(viewHolder.ivImageFull);
         }
-
         return convertView;
     }
 }
